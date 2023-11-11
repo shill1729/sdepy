@@ -1,7 +1,7 @@
 # This module has sympy functions for dealing with SDEs (on manifolds).
 import sympy as sp
 import numpy as np
-from symcalc import matrix_divergence, hessian
+from sdepy.symcalc import matrix_divergence, hessian
 
 
 def metric_tensor(chart, x):
