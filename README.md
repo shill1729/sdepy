@@ -1,5 +1,16 @@
 # sdepy
+<!-- badges: start -->
+<!-- badges: end -->
 This is a package for aiding in studying SDEs.
+
+
+## Installation
+
+You can install the package via from github on windows/mac in command line with:
+
+``` 
+python -m pip install git+https://github.com/shill1729/sdepy.git
+```
 
 The user can supply coordinates $x,y$ a chart,
 $$\phi(x,y) = (x_1(x,y), x_2(x,y), x_3(x,y))^T,$$
