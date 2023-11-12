@@ -75,7 +75,7 @@ def infinitesimal_generator(f, p: sp.Matrix, drift: sp.Matrix, diffusion: sp.Mat
 
 def adjoint_generator(f, p: sp.Matrix, drift: sp.Matrix, diffusion: sp.Matrix):
     """
-    
+
     :param f:
     :param p:
     :param drift:
@@ -85,7 +85,8 @@ def adjoint_generator(f, p: sp.Matrix, drift: sp.Matrix, diffusion: sp.Matrix):
     Sigma = sp.simplify(diffusion * diffusion.T)
     second_order_term = sp.simplify(matrix_divergence(Sigma*f, p)/2)
     flux = sp.simplify(-drift * f + second_order_term)
-    adjoint = matrix_divergence(flux, p)
+    # Since matrix divergence is implemented row-wise.
+    adjoint = sp.simplify(matrix_divergence(flux.T, p))
     return adjoint
 
 
