@@ -73,6 +73,14 @@ def infinitesimal_generator(f, p: sp.Matrix, drift: sp.Matrix, diffusion: sp.Mat
     return inf_gen
 
 
+def adjoint_generator(f, p: sp.Matrix, drift: sp.Matrix, diffusion: sp.Matrix):
+    Sigma = sp.simplify(diffusion * diffusion.T)
+    second_order_term = sp.simplify(matrix_divergence(Sigma*f, p)/2)
+    flux = sp.simplify(-drift * f + second_order_term)
+    adjoint = matrix_divergence(flux, p)
+    return adjoint
+
+
 def sympy_to_numpy_coefficients(mu, sigma, p):
     """
     Convert sympy SDE coefficients to numpy SDE coefficients as functions of p
@@ -169,21 +177,27 @@ if __name__ == "__main__":
     n = 9000
 
     # TODO: make everything below a function: and with multiple paths?
-    mu, Sigma = local_bm_coefficients(g, coord)
+    mu, sigma = local_bm_coefficients(g, coord)
     f = sp.Function("f")(*coord)
-    inf_gen = infinitesimal_generator(f, coord, mu, Sigma)
-    mu_np, sigma_np = sympy_to_numpy_coefficients(mu, Sigma, coord)
-    harmonic_test = infinitesimal_generator(sp.sin(theta), coord, mu, Sigma)
+    inf_gen = infinitesimal_generator(f, coord, mu, sigma)
+    adj_gen = adjoint_generator(f, coord, mu, sigma)
+    mu_np, sigma_np = sympy_to_numpy_coefficients(mu, sigma, coord)
+    harmonic_test = infinitesimal_generator(sp.sin(theta), coord, mu, sigma)
+    fokker_planck_test = adjoint_generator(sp.sin(theta), coord, mu, sigma)
     print("Metric tensor")
     print(g)
     print("Local drift")
     print(mu)
     print("Local diffusion")
-    print(Sigma)
+    print(sigma)
     print("Infinitesimal generator")
     print(inf_gen)
     print("Harmonic test")
     print(harmonic_test)
+    print("Fokker Planck RHS")
+    print(adj_gen)
+    print("Fokker Planck Test")
+    print(fokker_planck_test)
 
     xt = euler_maruyama(x0, tn, mu_np, sigma_np, n, seed=seed)
     yt = lift_path(xt, sp.lambdify([coord], xi))
