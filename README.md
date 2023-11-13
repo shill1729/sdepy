@@ -12,8 +12,40 @@ You can install the package via from github on windows/mac in command line with:
 python -m pip install git+https://github.com/shill1729/sdepy.git
 ```
 
-## Example:
-Here is a basic example demonstrating Brownian motion in the plane.
+## Features
+The package has functions/classes for
+
+Symbolic computations:
+- Infinitesimal generators
+- Adjoint generators
+- SDE coefficients for Riemannian Brownian motion in local coordinates
+- SDE coefficients for Riemannian Brownian motion in embedded in $\mathbb{R}^D$ (TODO)
+
+SDE solvers:
+- Euler-Maruyama
+- Milstein (TODO)
+- Runge-Kutta (TODO)
+
+Parabolic PDE Solvers:
+- Monte-Carlo parabolic PDE solvers (via Feynman-Kac formula)
+- Implicit finite difference solvers for parabolic PDEs
+
+Hyperbolic PDE solvers:
+- Implicit finite difference solver for the telegrapher type
+- Monte-Carlo solvers for the telegrapher PDE
+
+
+
+## Symbolic computation of local SDE coefficients of Riemannian Brownian motion
+The user can supply coordinates $x,y$ a chart,
+$$\phi(x,y) = (x_1(x,y), x_2(x,y), x_3(x,y))^T,$$
+and the app will compute the metric tensor $g = D\phi^T D\phi$ and the coefficients for 
+an SDE defining Brownian motion locally up to the first exit time of the chart:
+$$dZ_t = \frac12 \nabla_g \cdot g^{-1}(Z_t) dt + \sqrt{g^{-1}(Z_t)}dB_t,$$
+where $g^{-1}$ is the inverse metric tensor, the diffusion coefficient is its unique square root,
+and $\nabla_g \cdot A$ is the manifold-divergence applied row-wise to the matrix $A$. The manifold
+divergence of a vector field $f$ is $\nabla_g \cdot f = (1/\sqrt{\det g}) \nabla \cdot (\sqrt{\det g} f)$
+where $\nabla \cdot h$ is the ordinary Euclidean divergence of the vector field $h$.
 ```python
 import matplotlib.pyplot as plt
 from sdepy.solvers import *
@@ -58,7 +90,7 @@ plt.show()
 
 ## Feynman-Kac formula
 The function $u\in C^{1,2}([0, T]\times \mathbb{R}^n, \mathbb{R})$ solves
-$$\frac{\partial u}{\partial t} + \nabla_x u(t, x)^T \mu(x)+ \frac12 \mathop{\text{Tr}}(\Sigma(x) \nabla_x^2 u(t,x))=0$$
+$$\frac{\partial u}{\partial t} + \mu(x)^T \nabla_x u(t, x)+ \frac12 \mathop{\text{Tr}}(\Sigma(x) \nabla_x^2 u(t,x))=0$$
 with terminal condition $u(T, x) = h(x)$, if and only if
 $$u(t,x) = \mathbb{E}(h(X_T) | X_t=x).$$
 This can be extended to include "running-costs". Indeed, $u\in C^{1,2}([0, T]\times \mathbb{R}^d, \mathbb{R})$ solves
@@ -115,17 +147,6 @@ sde = SDE(mu, sigma)
 sde.feynman_kac_2d(f, h, x0, tn, grid_bds, grid_sizes, ntime, npaths, noise_dim)
 ```
 
-
-## Brownian motion on Riemannian Manifolds
-The user can supply coordinates $x,y$ a chart,
-$$\phi(x,y) = (x_1(x,y), x_2(x,y), x_3(x,y))^T,$$
-and the app will compute the metric tensor $g = D\phi^T D\phi$ and the coefficients for 
-an SDE defining Brownian motion locally up to the first exit time of the chart:
-$$dZ_t = \frac12 \nabla_g \cdot g^{-1}(Z_t) dt + \sqrt{g^{-1}(Z_t)}dB_t,$$
-where $g^{-1}$ is the inverse metric tensor, the diffusion coefficient is its unique square root,
-and $\nabla_g \cdot A$ is the manifold-divergence applied row-wise to the matrix $A$. The manifold
-divergence of a vector field $f$ is $\nabla_g \cdot f = (1/\sqrt{\det g}) \nabla \cdot (\sqrt{\det g} f)$
-where $\nabla \cdot h$ is the ordinary Euclidean divergence of the vector field $h$.
 
 
 
