@@ -319,7 +319,7 @@ class SDE:
 if __name__ == "__main__":
     # A template for 1d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
     tn = 0.1
-    ntime = 20
+    ntime = 50
     npaths = 100
     noise_dim = None
     x0 = np.array([1.])
@@ -355,13 +355,13 @@ if __name__ == "__main__":
     # A template for 2d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
     tn = 0.1
     ntime = 5
-    npaths = 50
+    npaths = 100
     noise_dim = None
-    x0 = np.array([1., 1.])
-    a = -1.5
-    b = 1.5
-    c = -1.5
-    d = 1.5
+    x0 = np.array([0., 0.])
+    a = -2.5
+    b = 2.5
+    c = -2.5
+    d = 2.5
     space_grid_size = 20
     time_grid_size = 5
     grid_bds = [a, b, c, d]
@@ -379,9 +379,11 @@ if __name__ == "__main__":
     def f(t, x):
         # return np.abs(x) < 1.
         return (np.linalg.norm(x, axis=1) < 1.) / tn
+        # return np.zeros(t.shape)
 
 
     def h(x):
+        # return np.linalg.norm(x, ord=2) > 1.
         return 0.
 
 

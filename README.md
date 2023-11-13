@@ -147,6 +147,9 @@ sde = SDE(mu, sigma)
 sde.feynman_kac_2d(f, h, x0, tn, grid_bds, grid_sizes, ntime, npaths, noise_dim)
 ```
 
+![Feynman Kac 2D](Images/fk_ex_2d.png)
+
+
 
 
 
