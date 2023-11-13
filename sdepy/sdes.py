@@ -1,3 +1,6 @@
+"""
+    A class implementation of a SDE.
+"""
 from scipy.integrate import trapezoid
 import matplotlib.pyplot as plt
 import numpy as np
@@ -348,3 +351,40 @@ if __name__ == "__main__":
     # For 1-d PDE estimation
     sde = SDE(mu, sigma)
     sde.feynman_kac_1d(f, h, x0, tn, grid_bds, grid_sizes, ntime, npaths, noise_dim)
+
+    # A template for 2d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
+    tn = 0.1
+    ntime = 5
+    npaths = 50
+    noise_dim = None
+    x0 = np.array([1., 1.])
+    a = -1.5
+    b = 1.5
+    c = -1.5
+    d = 1.5
+    space_grid_size = 20
+    time_grid_size = 5
+    grid_bds = [a, b, c, d]
+    grid_sizes = [space_grid_size, time_grid_size]
+
+
+    def mu(t, x):
+        return np.array([0., 0.])
+
+
+    def sigma(t, x):
+        return np.eye(2)
+
+
+    def f(t, x):
+        # return np.abs(x) < 1.
+        return (np.linalg.norm(x, axis=1) < 1.) / tn
+
+
+    def h(x):
+        return 0.
+
+
+    # For 2-d PDE estimation
+    sde = SDE(mu, sigma)
+    sde.feynman_kac_2d(f, h, x0, tn, grid_bds, grid_sizes, ntime, npaths, noise_dim)
