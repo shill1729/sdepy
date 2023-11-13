@@ -31,6 +31,46 @@ def manifold_divergence(a: sp.Matrix, p: sp.Matrix, volume_measure):
     return drift
 
 
+def embedded_bm_coefficients(f : sp.Matrix, p : sp.Matrix):
+    """
+    Compute the drift and diffusion coefficients of a Riemannian Brownian motion embedded in some
+    large Euclidean space.
+
+    :param f: sympy matrix, the function in the implicit equation f(x)=0 defining the manifold globally
+    :param p: sympy matrix, the point (x,y,z) etc
+    :return: tuple of (drift, P, H), of the drift vector, orthogonal projection matrix, and orthonormal frame matrix
+    """
+    D = p.shape[0] # Embedded dimension
+    K = f.shape[0] # Codimension
+    # Compute the Jacobian of the implicit function
+    Df = f.jacobian(p)
+    # Orthonormalize $ N^T N = Df^T A^{-1} Df, A=Df Df^T
+    A = Df * Df.T
+    B = A.inv()
+    P = sp.eye(D, D) - Df.T * B * Df
+    P = sp.simplify(P)
+    # Compute the orthonormal frame: H = first d columns of U sqrt(S), P=USV^T
+    P = sp.Matrix(P)
+    U, S, V = P.singular_value_decomposition()
+    H = U * sp.sqrt(S)
+
+    d = D-K
+    H = sp.simplify(H[:, 0:d])
+    # Compute the drift: the mean-curvature times the normal vector
+    C = sp.simplify(B.cholesky(hermitian=False))
+    N = sp.simplify(C * Df)
+    mean_curvature = -matrix_divergence(N, p)/2
+    # Second order term for intersections of hypersurfaces
+    q = sp.Matrix.zeros(K, 1)
+    if K > 1:
+        for i in range(K):
+            Dn = sp.simplify(N[i, :].jacobian(p))
+            q[i] = sp.simplify(sp.Trace(N*Dn*N.T))
+        q = q/2
+    drift = sp.simplify(N.T * (mean_curvature + q))
+    return drift, P, H
+
+
 def local_bm_coefficients(g: sp.Matrix, p):
     """
     Compute the SDE coefficients of a Brownian motion in a local chart of a manifold

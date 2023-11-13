@@ -19,7 +19,7 @@ The package has functions/classes for
 - Infinitesimal generators
 - Adjoint generators
 - SDE coefficients for Riemannian Brownian motion in local coordinates
-- SDE coefficients for Riemannian Brownian motion in embedded in $\mathbb{R}^D$ (TODO)
+- SDE coefficients for Riemannian Brownian motion in embedded in $\mathbb{R}^D$
 
 ### SDE solvers:
 - Euler-Maruyama
@@ -88,6 +88,10 @@ ax.plot3D(xt[:, 0], xt[:, 1], color="black")
 plt.show()
 ```
 
+## Symbolic computation of SDE coefficients of RBM embedded in Euclidean space
+
+TODO
+
 ## Feynman-Kac formula
 The function $u\in C^{1,2}([0, T]\times \mathbb{R}^n, \mathbb{R})$ solves
 $$\frac{\partial u}{\partial t} + \mu(x)^T \nabla_x u(t, x)+ \frac12 \mathop{\text{Tr}}(\Sigma(x) \nabla_x^2 u(t,x))=0$$
@@ -106,9 +110,11 @@ $\sigma: [0, T]\times
 \mathbb{R}^d\to \mathbb{R}^{d\times m}$ and finally $\Sigma(t,x)= \sigma(t,x)\sigma(t,x)^T$ is the infinitesimal 
 covariance.
 
+### Example:
 The below example computes the average time that planar Brownian motion
 spends in the unit-disk, i.e. we compute
-$$u(t,x)=\mathbb{E}(\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x)$$
+$$u(t,x)=\mathbb{E}\left(\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x\right).$$
+In terms of the above notation, $h(x)=0$, and $f(t, x)=\mathbb{1}_{|x|\leq 1}$. 
 
 ```python
 # A template for 2d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
