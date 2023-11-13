@@ -88,7 +88,36 @@ plt.show()
 
 ## Symbolic computation of SDE coefficients of RBM embedded in Euclidean space
 
-TODO
+Many every day surfaces can be written as the zeros of some smooth function:
+1. Sphere: $f(x,y,z)=x^2+y^2+z^2-1$
+2. Ellipsoid $f(x,y,z)=(x/a)^2+(y/b)^2+(z/c)^2-1$
+3. Paraboloid: $f(x,y,z)=(x/a)^2+(y/b)^2-z$
+4. Hyperbolic Paraboloid: $f(x,y,z)=(y/b)^2-(x/a)^2-z$
+5. Hyperboloid $f(x,y,z)=(x/a)^2+(y/b)^2-(z/c)^2-1$
+6. Cylinder $f(x,y,z)=x^2+y^2-1$
+7. Torus $f(x,y,z)=(\sqrt{x^2+y^2}-R)^2+z^2-r^2$
+
+The orthogonal projection method to generate Brownian motion is as follows. Given a surface $M$ that can be written as
+$$M = f^{-1}(\{0\})$$
+for some smooth $f:\mathbb{R}^3\to \mathbb{R}$, we can define the normal vector
+$$n(x)=\frac{\nabla f(x)}{\|\nabla f(x)\|},$$
+and then the orthogonal projection to the tangent subspace at $x$ on $\Sigma$,
+$$P(x)=I-n(x)n(x)^T,$$
+where matrix multiplication is being used.
+
+Then the Stratonovich SDE for BM on $\Sigma$ is
+$$\partial X_t = P(X_t)\partial B_t$$
+and the Ito SDE is
+$$d X_t = c(X_t)n(X_t) dt + P(X_t) dB_t,$$
+where $c=-\frac 12 \nabla \cdot n$ is the mean curvature of the surface in the direction of
+the normal (chosen to face "inward").
+
+More generally, for intersections of hypersurfaces we have
+$$dX = N^T(c+q)dt + P(X)dB,$$
+where the rows of $N$ are the $K=D-d$ normal vectors, $c$ is a vector of size $K$ whose
+components are the mean curvatures in the direction of the normals, and $q$ is some
+nasty term: $q^r = \mathop{\text{Tr}}(N D[n_r] N^T)$.
+
 
 ## Feynman-Kac formula
 The function $u\in C^{1,2}([0, T]\times \mathbb{R}^n, \mathbb{R})$ solves
