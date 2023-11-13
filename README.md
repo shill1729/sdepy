@@ -57,9 +57,8 @@ plt.show()
 ```
 
 ## Feynman-Kac formula
-$\newcommand{\pder}[2][]{\frac{\partial#1}{\partial#2}}$
 The function $u\in C^{1,2}([0, T]\times \mathbb{R}^n, \mathbb{R})$ solves
-$$\pder[p]{t} + \nabla_x u(t, x)^T \mu(x)+ \frac12 \Tr(\Sigma(x) \nabla_x^2 u(t,x))=0$$
+$$\frac{\partial u}{\partial t} + \nabla_x u(t, x)^T \mu(x)+ \frac12 \mathop{\text{Tr}}(\Sigma(x) \nabla_x^2 u(t,x))=0$$
 with terminal condition $u(T, x) = h(x)$, if and only if
 $$u(t,x) = \mathbb{E}(h(X_T) | X_t=x).$$
 This can be extended to include "running-costs". Indeed, $u\in C^{1,2}([0, T]\times \mathbb{R}^d, \mathbb{R})$ solves
