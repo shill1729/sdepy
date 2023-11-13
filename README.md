@@ -15,22 +15,22 @@ python -m pip install git+https://github.com/shill1729/sdepy.git
 ## Features
 The package has functions/classes for
 
-Symbolic computations:
+### Symbolic computations:
 - Infinitesimal generators
 - Adjoint generators
 - SDE coefficients for Riemannian Brownian motion in local coordinates
 - SDE coefficients for Riemannian Brownian motion in embedded in $\mathbb{R}^D$ (TODO)
 
-SDE solvers:
+### SDE solvers:
 - Euler-Maruyama
 - Milstein (TODO)
 - Runge-Kutta (TODO)
 
-Parabolic PDE Solvers:
+### Parabolic PDE Solvers:
 - Monte-Carlo parabolic PDE solvers (via Feynman-Kac formula)
 - Implicit finite difference solvers for parabolic PDEs
 
-Hyperbolic PDE solvers:
+### Hyperbolic PDE solvers:
 - Implicit finite difference solver for the telegrapher type
 - Monte-Carlo solvers for the telegrapher PDE
 
@@ -105,6 +105,10 @@ where $B$ is a standard Brownian motion in $\mathbb{R}^m$, $\mu:[0,T]\times \mat
 $\sigma: [0, T]\times 
 \mathbb{R}^d\to \mathbb{R}^{d\times m}$ and finally $\Sigma(t,x)= \sigma(t,x)\sigma(t,x)^T$ is the infinitesimal 
 covariance.
+
+The below example computes the average time that planar Brownian motion
+spends in the unit-disk, i.e. we compute
+$$u(t,x)=\mathbb{E}(\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x)$$
 
 ```python
 # A template for 2d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
