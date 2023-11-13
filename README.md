@@ -47,8 +47,6 @@ and $\nabla_g \cdot A$ is the manifold-divergence applied row-wise to the matrix
 divergence of a vector field $f$ is $\nabla_g \cdot f = (1/\sqrt{\det g}) \nabla \cdot (\sqrt{\det g} f)$
 where $\nabla \cdot h$ is the ordinary Euclidean divergence of the vector field $h$.
 ```python
-import matplotlib.pyplot as plt
-from sdepy.solvers import *
 from sdepy.symsde import *
 
 # sympy input
@@ -113,7 +111,7 @@ covariance.
 ### Example:
 The below example computes the average time that planar Brownian motion
 spends in the unit-disk, i.e. we compute
-$$u(t,x)=\mathbb{E}\left(\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x\right).$$
+$$u(t,x)=\mathbb{E}\left[\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x \right].$$
 In terms of the above notation, $h(x)=0$, and $f(t, x)=\mathbb{1}_{|x|\leq 1}$. 
 
 ```python
