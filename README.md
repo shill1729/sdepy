@@ -137,6 +137,12 @@ $\sigma: [0, T]\times
 \mathbb{R}^d\to \mathbb{R}^{d\times m}$ and finally $\Sigma(t,x)= \sigma(t,x)\sigma(t,x)^T$ is the infinitesimal 
 covariance.
 
+For solutions to the SDE to exist, we only require locally Lipschitz continuity of $\mu$ and $\sigma$ in $x$. Here, 
+the terminal cost $h$ and the running cost are allowed to be non-smooth. This is a highly efficient solver in large 
+dimension $d\gg 1$ and small time-scales $0< T \ll 1 $ because of its very nature--the solution at a single point 
+$(t,x)$ is grid-free, and we can use a small amount of time-steps in the SDE solver when $[0,T]$ is 
+small without losing accuracy.
+
 ### Example:
 The below example computes the average time that planar Brownian motion
 spends in the unit-disk, i.e. we compute
