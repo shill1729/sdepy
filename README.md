@@ -112,7 +112,7 @@ covariance.
 The below example computes the average time that planar Brownian motion
 spends in the unit-disk, i.e. we compute
 $$u(t,x)=\mathbb{E}\left[\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x \right].$$
-In terms of the above notation, $h(x)=0$, and $f(t, x)=\mathbb{1}_{\|x\|\leq 1}$. 
+
 
 ```python
 # A template for 2d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
