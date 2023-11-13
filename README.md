@@ -139,7 +139,7 @@ covariance.
 
 For solutions to the SDE to exist, we only require locally Lipschitz continuity of $\mu$ and $\sigma$ in $x$. Here, 
 the terminal cost $h$ and the running cost are allowed to be non-smooth. This is a highly efficient solver in large 
-dimension $d\gg 1$ and small time-scales $0< T \ll 1 $ because of its very nature--the solution at a single point 
+dimension $d\gg 1$ and small time-scales $0< T << 1 $ because of its very nature--the solution at a single point 
 $(t,x)$ is grid-free, and we can use a small amount of time-steps in the SDE solver when $[0,T]$ is 
 small without losing accuracy.
 
