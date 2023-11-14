@@ -144,12 +144,12 @@ $(t,x)$ is grid-free, and we can use a small amount of time-steps in the SDE sol
 small without losing accuracy.
 
 ### Example:
-The below example computes the average time that planar Brownian motion
+The below example computes the proportion of time that planar Brownian motion
 spends in the unit-disk, i.e. we compute
-$$u(t,x)=\mathbb{E}\left[\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x \right].$$
+$$u(t,x)=\mathbb{E}\left[\frac{1}{T}\int_t^T \mathbb{1}_{\|X_u\| \leq 1} du|X_t=x \right].$$
 
 In terms of the above notation, the terminal cost is $h(x)=0$, and the running cost 
-is $f(t, x)=\mathbb{1}_{ \|x\| \leq 1}$. 
+is $f(t, x)=\mathbb{1}_{ \|x\| \leq 1}/T$. 
 
 ```python
 # A template for 2d Fenyman-Kac problems (solving PDEs with MC estimates of SDEs)
