@@ -217,23 +217,6 @@ where $\Sigma_i = \sigma_i \sigma_i^T$.
 
 Recall that for any Markov process $(X_n)_{n\geq 0}$ we have
 $$f(x_0, \dotsc, x_n) = f(x_0) \prod_{i=0}^n f(x_{i+1}| x_i).$$
-Hence, in particular, this applies to our discretized sample-path $(X_{t_i})_{i=0}^n$ obtained from the EM-scheme, 
-since it is obviously a discrete-time Markov process in its own right. If we have $j=1,2,\dotsc, N$ independent 
-sample paths all starting from $X_0=x_0$, then the joint density of these $N$ paths is given by
-$$f\left(\{x_i^1\}_{i=0}^n, \dotsc, \{x_i^N\}_{i=0}^n \right) = \prod_{j=1}^N f(x_0^j, \dotsc, x_n^j)$$
-$$= f(x_0)^N \prod_{j=1}^N \prod_{i=0}^n f(x_{i+1}^j| x_i^j).$$
-
-Now simply plug in the conditional Gaussian density we specified earlier for $f(x_{i+1}|x_i)$ and take logarithms. 
-This gives the log-likelihood of the discretized ensemble $X\in \mathbb{R}^{N \times (n+1) \times d}$ ($N$ paths, $n$ time 
-steps, $d$ dimensions),
-$$l(X;\theta) = N \log f(x_0) -\frac{n}{2} \log \pi -\frac12 \sum_{j=1}^N \sum_{i=0}^n Q(i,j;\theta)+
-\log \det \Sigma(i,j;\theta_2)$$
-where $Q(i,j,\theta)$ is the quadratic form
-$$Q(i,j;\theta) := z(i,j;\theta_1)^T \Sigma^{-1}(i,j;\theta_2)z(i,j;\theta_1),$$
-where $z(i,j;\theta_1) = x_{i+1}^j - x_i^j -\mu(x_i^j; \theta_1) h$ is the centered vector and 
-$\Sigma(i,j,\theta_2) = \Sigma(x_i^j;\theta_2)h$ and $\theta = (\theta_1, \theta_2)$. 
-To be sure, the subscripts $i$ refer to the time-step and the superscripts $j$ refer to the $j$-th sample path from 
-the ensemble.
 
 
 
