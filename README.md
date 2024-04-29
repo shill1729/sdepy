@@ -242,8 +242,8 @@ $$\mathcal{L}_ {NLL}(\theta):=-l(X;\theta) = \frac12\sum_ {j=1}^N \sum_ {i=0}^n 
 
 ### Example for one dimensional CIR process
 We simulate a true CIR process over $T=5$ for 10,000 time steps and train on the first 5,000 for 10,000 training epochs
-using 2-layer neural networks of 1 neuron each for the drift and covariance. This example code can easily be modified
-for two dimensional processes. 
+using 2-layer neural networks of 2 neurons each for the drift and covariance. This example code can easily be modified
+for two dimensional processes. Weight decay in the training was used, with a factor of $0.01$. 
 ```python
 # An example of our Neural SDE being fit to planar motions.
 import matplotlib.pyplot as plt
@@ -262,9 +262,9 @@ npaths = 1  # number of sample paths in data ensemble
 npaths_fit = 5  # number of sample paths to generated under fitted model
 seed = 17
 lr = 0.001
-weight_decay = 0.  # Weight decay improves [32, 16] hidden dim fit by a lot!
+weight_decay = 0.01  # Weight decay improves [32, 16] hidden dim fit by a lot!
 epochs = 10000
-hidden_dim = [1, 1]
+hidden_dim = [2, 2]
 num_layers = 2
 noise_dim = 1
 act = "Tanh"

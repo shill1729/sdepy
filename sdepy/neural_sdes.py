@@ -123,9 +123,9 @@ if __name__ == "__main__":
     npaths_fit = 5  # number of sample paths to generated under fitted model
     seed = 17
     lr = 0.001
-    weight_decay = 0.  # Weight decay improves [32, 16] hidden dim fit by a lot!
+    weight_decay = 0.01  # Weight decay improves [32, 16] hidden dim fit by a lot!
     epochs = 10000
-    hidden_dim = [1, 1]
+    hidden_dim = [2, 2]
     num_layers = 2
     noise_dim = 1
     act = "Tanh"
