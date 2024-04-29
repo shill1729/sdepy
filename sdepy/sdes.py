@@ -88,7 +88,22 @@ class SDE:
         Kolmogorov Backward Equation using conditional averages.
 
         :param mu: drift coefficient function of (t,x) returns shape (d, )
-        :param sigma: drift coefficient function of (t,x) returns shape (d, npaths)
+        :param sigma: diffusion coefficient function of (t,x) returns shape (d, n) where n is the size
+        of the driving Brownian motion noise.
+
+        Attributes:
+            mu:     the infinitesimal drift coefficient function of (t,x)
+            sigma:  the infinitesimal diffusion coefficient function of (t,x)
+
+        Methods:
+            solve: solve the SDE numerically using the Euler-Maruyama scheme
+            sample_ensemble: generate an ensemble of sample paths starting from the same
+            point by repeatedly calling .solve(...)
+            mc_pde_solve: Solve the Kolmogorov Backward PDE at a single point (t,x) using Monte-Carlo estimation
+        via the Feynman-Kac formula.
+            solve_and_stop: solve the SDE stopping at a boundary condition
+
+
         """
         self.mu = mu
         self.sigma = sigma
