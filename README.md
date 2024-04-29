@@ -34,6 +34,10 @@ The package has functions/classes for
 - Implicit finite difference solver for the telegrapher type
 - Monte-Carlo solvers for the telegrapher PDE
 
+### Neural SDEs via MLE of stochastic integration schemes
+- The Euler-Maruyama scheme gives a discrete-time Gaussian-Markov process approximation to the SDE
+- We can parameterize the SDE coefficients as neural networks and then maximize this approximate likelihood
+- Milstein-scheme leads to another discrete-time Markov process but is no longer simply Gaussian (TODO)
 
 
 ## Symbolic computation of local SDE coefficients of Riemannian Brownian motion
@@ -47,7 +51,9 @@ and $\nabla_g \cdot A$ is the manifold-divergence applied row-wise to the matrix
 divergence of a vector field $f$ is $\nabla_g \cdot f = (1/\sqrt{\det g}) \nabla \cdot (\sqrt{\det g} f)$
 where $\nabla \cdot h$ is the ordinary Euclidean divergence of the vector field $h$.
 ```python
+import  matplotlib.pyplot as plt
 from sdepy.symsde import *
+from sdepy.solvers import euler_maruyama
 
 # sympy input
 t, x, y = sp.symbols("t x y", real=True)
@@ -194,7 +200,41 @@ sde.feynman_kac_2d(f, h, x0, tn, grid_bds, grid_sizes, ntime, npaths, noise_dim)
 
 ![Feynman Kac 2D](Images/fk_ex_2d.png)
 
+## Neural SDEs via MLE of stochastic integration schemes
 
+### Euler-Maruyama/Neural Gaussian Markov with approximations to SDEs
+Every stochastic integration scheme yields a discrete-time, finite-order, Markov process approximation to the original
+SDE. The conditional distribution of this approximate process will have parameters in terms of the original SDE
+coefficient functions. If we replace these with neural networks, then we can approximate the original one by maximizing
+the (log)-likelihood of this approximate process over the neural-network parameters (weights and biases).
+
+For example, the Euler-Maruyama scheme for our SDE says that
+$$X_{i+1} = X_i +\mu_i h + \sigma_i \sqrt{h}Z_i,$$
+where $\mu_i = \mu(t_i, X_i)$, and $\sigma_i = \sigma(t_i, X_i)$ and where we write $X_i=X_{t_i}$ for notational 
+convenience. This says that conditional on $X_i=x_i$, $X_{i+1}$ is distributed like 
+$$\mathcal{N}(x_i+\mu_i h, \Sigma_i h),$$
+where $\Sigma_i = \sigma_i \sigma_i^T$.
+
+Recall that for any Markov process $(X_n)_{n\geq0}$ we have
+$$f(x_0, \dotsc, x_n) = f(x_0) \prod_{i=0}^n f(x_{i+1}| x_i).$$
+Hence, in particular, this applies to our discretized sample-path $(X_{t_i})_{i=0}^n$ obtained from the EM-scheme, 
+since it is obviously a discrete-time Markov process in its own right. If we have $j=1,2,\dotsc, N$ independent 
+sample paths all starting from $X_0=x_0$, then the joint density of these $N$ paths is given by
+\begin{align*}
+	f\left(\{x_i^1\}_{i=0}^n, \dotsc, \{x_i^N\}_{i=0}^n \right) &= \prod_{j=1}^N f(x_0^j, \dotsc, x_n^j)\\
+	& = f(x_0)^N \prod_{j=1}^N \prod_{i=0}^n f(x_{i+1}^j| x_i^j).
+\end{align*}
+Now simply plug in the conditional Gaussian density we specified earlier for $f(x_{i+1}|x_i)$ and take logarithms. 
+This gives the log-likelihood of the discretized ensemble $X\in \R^{N \times (n+1) \times d}$ ($N$ paths, $n$ time 
+steps, $d$ dimensions),
+$$l(X;\theta) = N \log f(x_0) -\frac{n}{2} \log \pi -\frac12 \sum_{j=1}^N \sum_{i=0}^n Q(i,j;\theta)+
+\log \det \Sigma(i,j;\theta_2)$$
+where $Q(i,j,\theta)$ is the quadratic form
+$$Q(i,j;\theta) := z(i,j;\theta_1)^T \Sigma^{-1}(i,j;\theta_2)z(i,j;\theta_1),$$
+where $z(i,j;\theta_1) = x_{i+1}^j - x_i^j -\mu(x_i^j; \theta_1) h$ is the centered vector and 
+$\Sigma(i,j,\theta_2) = \Sigma(x_i^j;\theta_2)h$ and $\theta = (\theta_1, \theta_2)$. 
+To be sure, the subscripts $i$ refer to the time-step and the superscripts $j$ refer to the $j$-th sample path from 
+the ensemble.
 
 
 
