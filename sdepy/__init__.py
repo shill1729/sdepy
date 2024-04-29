@@ -1,1 +1,1 @@
-__all__ = ["solvers", "symsde", "symcalc"]
+__all__ = ["solvers", "symsde", "symcalc", "nncoefs", "neural_sdes", "sdes", "pdes"]
