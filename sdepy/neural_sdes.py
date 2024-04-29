@@ -5,7 +5,7 @@
 # parameterized by neural networks.
 import torch
 
-from nncoefs import EulerMaruyamaNeuralNetwork
+from sdepy.nncoefs import EulerMaruyamaNeuralNetwork
 
 
 def gaussian_nll(z, Sigma):

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sdepy',
-    version='1.15.5',
+    version='1.15.6',
     packages=['sdepy'],
     url='https://github.com/shill1729/sdepy',
     requires=["numpy", "sympy", "matplotlib", "scipy", "torch"],
