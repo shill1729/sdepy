@@ -220,8 +220,8 @@ $$f(x_0, \dotsc, x_n) = f(x_0)\prod_{i=0}^n f(x_{i+1}| x_i).$$
 Hence, in particular, this applies to our discretized sample-path $(X_{t_i})_ {i=0}^n$ obtained from the EM-scheme, 
 since it is obviously a discrete-time Markov process in its own right. If we have $j=1,2,\dotsc, N$ independent sample 
 paths all starting from $X_0=x_0$, then the joint density of these $N$ paths is given by
-$$ f\left(\{x_i^1\}_ {i=0}^n, \dotsc, \{x_i^N\}_ {i=0}^n \right) = \prod_ {j=1}^N f(x_0^j, \dotsc, x_n^j)$$
-$$= f(x_0)^N \prod_ {j=1}^N \prod_ {i=0}^n f(x_ {i+1}^j| x_i^j).$$
+$$f\left(\{x_ i^1\}_ {i=0}^n, \dotsc, \{x_ i^N\}_ {i=0}^n \right) = \prod_ {j=1}^N f(x_ 0^j, \dotsc, x_ n^j)$$
+$$= f(x_0)^N \prod_ {j=1}^N \prod_ {i=0}^n f(x_ {i+1}^j| x_ i^j).$$
 Now simply plug in the conditional Gaussian density we specified earlier for $f(x_{i+1}|x_i)$ and take logarithms. This 
 gives the log-likelihood of the discretized ensemble $X\in \mathbb{R}^{N \times (n+1) \times d}$ ($N$ paths, $n$ time 
 steps, $d$ dimensions),
