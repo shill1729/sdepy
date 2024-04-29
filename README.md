@@ -215,8 +215,8 @@ convenience. This says that conditional on $X_i=x_i$, $X_{i+1}$ is distributed l
 $$\mathcal{N}(x_i+\mu_i h, \Sigma_i h),$$
 where $\Sigma_i = \sigma_i \sigma_i^T$.
 
-Recall that for any Markov process $(X_n)_{n \geqslant 0}$ we have
-$$f(x_0, \dotsc, x_n) = f(x_0) \prod_{i=0}^n f(x_{i+1}| x_i).$$
+Recall that for any Markov process $(X_n)_{n \geq 0}$ we have
+$$f(x_0, \dotsc, x_n) = f(x_0) \prod_{i=0}^{n} f(x_{i+1}| x_i).$$
 
 
 
