@@ -236,7 +236,7 @@ $i$ refer to the time-step and the superscripts $j$ refer to the $j$-th sample p
 Thus we can minimize the negative log-likelihood as our loss function and this will give an MLE for our neural SDE 
 model given an ensemble data-set with equal time-steps. The first two terms do not depend on the network parameters 
 $\theta$, thus we may discard them in the optimization. Therefore, our loss function is
-$$\mathcal{L}_{NLL}(\theta):=-l(X;\theta) = \frac12\sum_{j=1}^N \sum_{i=0}^n Q(i,j;\theta)+
+$$\mathcal{L}_ {NLL}(\theta):=-l(X;\theta) = \frac12\sum_ {j=1}^N \sum_ {i=0}^n Q(i,j;\theta)+
 \log \det \Sigma(i,j;\theta_2).$$
 
 
