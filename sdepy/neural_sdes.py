@@ -119,12 +119,12 @@ if __name__ == "__main__":
     tn = 5.
     ntime = 10000
     ntrain = 5000
-    npaths = 2  # number of sample paths in data ensemble
+    npaths = 1  # number of sample paths in data ensemble
     npaths_fit = 5  # number of sample paths to generated under fitted model
     seed = 17
     lr = 0.001
     weight_decay = 0.  # Weight decay improves [32, 16] hidden dim fit by a lot!
-    epochs = 9000
+    epochs = 10000
     hidden_dim = [1, 1]
     num_layers = 2
     noise_dim = 1

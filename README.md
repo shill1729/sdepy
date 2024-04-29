@@ -240,3 +240,91 @@ $$\mathcal{L}_ {NLL}(\theta):=-l(X;\theta) = \frac12\sum_ {j=1}^N \sum_ {i=0}^n 
 \log \det \Sigma(i,j;\theta_2).$$
 
 
+### Example for one dimensional CIR process
+We simulate a true CIR process over $T=5$ for 10,000 time steps and train on the first 5,000 for 10,000 training epochs
+using 2-layer neural networks of 1 neuron each for the drift and covariance. This example code can easily be modified
+for two dimensional processes. 
+```python
+# An example of our Neural SDE being fit to planar motions.
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+from sdepy.sdes import SDE
+from sdepy.neural_sdes import NeuralSDE
+
+x00 = [0.5]
+x0 = torch.tensor(x00, dtype=torch.float32)
+x0np = np.array(x00)
+tn = 5.
+ntime = 10000
+ntrain = 5000
+npaths = 1  # number of sample paths in data ensemble
+npaths_fit = 5  # number of sample paths to generated under fitted model
+seed = 17
+lr = 0.001
+weight_decay = 0.  # Weight decay improves [32, 16] hidden dim fit by a lot!
+epochs = 10000
+hidden_dim = [1, 1]
+num_layers = 2
+noise_dim = 1
+act = "Tanh"
+printfreq = 1000
+state_dim = x0.size()[0]
+h = tn / ntime
+torch.manual_seed(seed)
+
+# Ground truth coefficients: One dimensional example: Mean-Reverting Process
+def mu(t, x):
+    return 1.1 * (0.9 - x)
+
+
+def sigma(t, x):
+    return 0.15 * np.sqrt(x)
+
+
+# Generating ensemble data
+sde = SDE(mu, sigma)
+ensemble = sde.sample_ensemble(x0np, tn, ntime, npaths, noise_dim=noise_dim)
+ensemble = torch.tensor(ensemble, dtype=torch.float32)
+training_ensemble = torch.zeros((npaths, ntrain, state_dim))
+test_ensemble = torch.zeros((npaths, ntime - ntrain + 1, state_dim))
+for j in range(npaths):
+    training_ensemble[j, :, :] = ensemble[j, :ntrain, :]
+    test_ensemble[j, :, :] = ensemble[j, ntrain:, :]
+
+# Neural SDE model to fit to ensemble data
+nsde = NeuralSDE(state_dim, hidden_dim, num_layers, act, noise_dim)
+nsde.fit(training_ensemble, lr, epochs, printfreq, h, weight_decay)
+print("NLL on Test Ensemble = " + str(nsde.loss(test_ensemble, h)))
+
+# Throw to an SDE object for convenient simulations of ensembles
+sde_fit = SDE(nsde.mu_fit, nsde.sigma_fit)
+ensemble_fit = sde_fit.sample_ensemble(x0np, tn, ntime, npaths=npaths_fit)
+ensemble = ensemble.detach().numpy()
+
+# Plot ensembles
+fig = plt.figure()
+t = np.linspace(0, tn, ntime + 1)
+
+for i in range(npaths):
+    if state_dim == 2:
+        plt.plot(ensemble[i, :, 0], ensemble[i, :, 1], c="black", alpha=0.5)
+    elif state_dim == 1:
+        plt.plot(t, ensemble[i, :, 0], c="black", alpha=0.5)
+for i in range(npaths_fit):
+    if state_dim == 2:
+        plt.plot(ensemble_fit[i, :, 0], ensemble_fit[i, :, 1], c="blue", alpha=0.5)
+    elif state_dim == 1:
+        plt.plot(t, ensemble_fit[i, :, 0], c="blue", alpha=0.5)
+
+# Creating custom legend entries
+true_line = plt.Line2D([], [], color='black', label='True')
+model_line = plt.Line2D([], [], color='blue', label='Model')
+# Adding the legend to the plot
+plt.legend(handles=[true_line, model_line])
+plt.show()
+```
+
+![Neural Gaussian approx to OU process](Images/neural_sde_1d_ou.png)
+
+
